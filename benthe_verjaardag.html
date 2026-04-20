@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gefeliciteerd Benthe!</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; overflow: hidden; }
+  body {
+    background: #0a0a0f; color: #f5f0e8;
+    font-family: 'Montserrat', sans-serif;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+  }
+  .stars { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+  .star { position: absolute; width: 2px; height: 2px; background: #fff; border-radius: 50%; animation: twinkle var(--dur) ease-in-out infinite; opacity: 0; }
+  @keyframes twinkle { 0%,100%{opacity:0} 50%{opacity:var(--max-op)} }
+
+  .container {
+    position: relative; z-index: 1;
+    width: 100%; max-width: 680px;
+    padding: 1rem 2rem;
+    display: flex; flex-direction: column; align-items: center;
+    gap: 0.5rem;
+  }
+
+  .ribbon-top { display: flex; align-items: center; justify-content: center; gap: 1rem; width: 100%; }
+  .ribbon-line { flex: 1; height: 1px; background: linear-gradient(to right, transparent, #c9a96e); }
+  .ribbon-line.right { background: linear-gradient(to left, transparent, #c9a96e); }
+  .ribbon-diamond { width: 6px; height: 6px; background: #c9a96e; transform: rotate(45deg); flex-shrink: 0; }
+
+  .age-badge { font-family: 'Cormorant Garamond', serif; font-size: 0.75rem; font-weight: 300; letter-spacing: 0.35em; text-transform: uppercase; color: #c9a96e; }
+  h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.2rem, 6vw, 3.4rem); font-weight: 300; font-style: italic; line-height: 1; color: #f5f0e8; letter-spacing: -0.02em; }
+  h1 span { color: #c9a96e; font-style: normal; font-weight: 600; }
+  .subtitle { font-size: 0.62rem; letter-spacing: 0.35em; text-transform: uppercase; color: #8a8070; }
+
+  .flip-scene { perspective: 1200px; width: 100%; max-width: 460px; }
+  .flip-card { width: 100%; aspect-ratio: 4/3.2; position: relative; transform-style: preserve-3d; transition: transform 0.9s cubic-bezier(0.4,0,0.2,1); cursor: pointer; }
+  .flip-card.flipped { transform: rotateY(180deg); }
+
+  .face {
+    position: absolute; inset: 0;
+    backface-visibility: hidden; -webkit-backface-visibility: hidden;
+    border-radius: 4px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 1.5rem 2.2rem;
+  }
+  .face::before,.face::after { content:''; position:absolute; width:18px; height:18px; border-style:solid; }
+  .face::before { top:-1px; left:-1px; border-width:2px 0 0 2px; }
+  .face::after  { bottom:-1px; right:-1px; border-width:0 2px 2px 0; }
+
+  .face-front { background: rgba(255,255,255,0.03); border: 1px solid rgba(201,169,110,0.3); }
+  .face-front::before,.face-front::after { border-color:#c9a96e; }
+  .face-back { background: #f5ede0; border: 1px solid #c9a96e; transform: rotateY(180deg); justify-content: space-between; }
+  .face-back::before,.face-back::after { border-color:#9a7040; }
+
+  /* FRONT */
+  .front-icon { font-size: 2.4rem; margin-bottom: 0.6rem; animation: float 3s ease-in-out infinite 2s; }
+  @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
+  .front-label { font-size: 0.58rem; letter-spacing: 0.4em; text-transform: uppercase; color: #6a6058; margin-bottom: 0.5rem; }
+  .front-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(1.4rem,3.5vw,1.9rem); font-weight: 300; color: #f5f0e8; line-height: 1.3; margin-bottom: 1rem; text-align: center; }
+  .flip-hint { display: flex; align-items: center; gap: 0.4rem; font-size: 0.58rem; letter-spacing: 0.25em; text-transform: uppercase; color: #5a5248; animation: pulse 2s ease-in-out infinite 2.5s; }
+  @keyframes pulse { 0%,100%{opacity:0.5} 50%{opacity:1} }
+  .flip-arrow { width: 18px; height: 18px; border: 1px solid #c9a96e; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 9px; color: #c9a96e; }
+
+  /* BACK */
+  .back-top { text-align: center; width: 100%; }
+  .back-label { font-size: 0.58rem; letter-spacing: 0.4em; text-transform: uppercase; color: #9a8060; margin-bottom: 0.35rem; display: block; }
+  .back-main { font-family: 'Cormorant Garamond', serif; font-size: clamp(1.4rem,3.8vw,2rem); font-weight: 400; line-height: 1.15; color: #1a1208; }
+  .back-main em { font-style: italic; color: #8a5c1a; }
+  .back-sub { font-size: 0.65rem; letter-spacing: 0.18em; color: #9a8060; margin-top: 0.2rem; display: block; }
+
+  .amount-pill { display: flex; align-items: center; justify-content: center; gap: 0.5rem; border: 1px solid #9a7040; padding: 0.4rem 0; width: 72%; font-family: 'Cormorant Garamond', serif; font-size: 1.25rem; font-weight: 400; color: #7a5010; letter-spacing: 0.15em; }
+
+  .back-message { font-family: 'Cormorant Garamond', serif; font-weight: 300; width: 100%; text-align: center; }
+  .msg-intro { font-style: italic; font-size: 0.82rem; line-height: 1.65; color: #4a3820; display: block; margin-bottom: 0.4rem; }
+  .msg-intro strong { font-style: normal; font-weight: 500; color: #8a5c1a; }
+
+  .msg-gifts { list-style: none; padding: 0; margin: 0; width: 100%; }
+  .msg-gifts li { font-size: 0.78rem; font-style: italic; color: #5a4025; padding: 0.1rem 0; display: flex; align-items: center; justify-content: center; gap: 0.4rem; line-height: 1.35; }
+  .msg-gifts li::before { content: '✦'; font-size: 0.4rem; color: #c9a96e; flex-shrink: 0; }
+
+  .msg-finale-wrap {
+    width: 100%;
+    border-top: 1px solid rgba(154,112,64,0.35);
+    border-bottom: 1px solid rgba(154,112,64,0.35);
+    padding: 0.5rem 0;
+    text-align: center;
+  }
+  .msg-finale {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1rem, 2.8vw, 1.3rem);
+    font-style: normal;
+    font-weight: 600;
+    color: #7a4e0e;
+    letter-spacing: 0.02em;
+    line-height: 1.25;
+    display: block;
+  }
+  .msg-finale em {
+    font-style: italic;
+    font-weight: 400;
+    color: #9a6010;
+    font-size: 0.85em;
+    display: block;
+    margin-top: 0.15rem;
+  }
+
+  .msg-outro { font-style: italic; font-size: 0.8rem; line-height: 1.6; color: #5a4030; display: block; text-align: center; }
+  .msg-outro strong { font-style: normal; font-weight: 500; color: #8a5c1a; }
+  .from-line { font-style: normal; font-size: 0.6rem; letter-spacing: 0.35em; text-transform: uppercase; color: #b09060; display: block; text-align: center; margin-top: 0.25rem; }
+
+  .close-hint { font-size: 0.52rem; letter-spacing: 0.25em; text-transform: uppercase; color: #c0a870; text-align: center; }
+
+  .gems { display: flex; justify-content: center; gap: 0.4rem; }
+  .gem { width: 8px; height: 8px; background: #c9a96e; clip-path: polygon(50% 0%,100% 38%,82% 100%,18% 100%,0% 38%); animation: gemPulse 2s ease-in-out infinite; }
+  .gem:nth-child(2){animation-delay:0.3s;background:#e8d5b0}
+  .gem:nth-child(3){animation-delay:0.6s}
+  .gem:nth-child(4){animation-delay:0.9s;background:#e8d5b0}
+  .gem:nth-child(5){animation-delay:1.2s}
+  @keyframes gemPulse { 0%,100%{opacity:0.5;transform:scale(1)} 50%{opacity:1;transform:scale(1.3)} }
+
+  .footer-note { font-size: 0.58rem; letter-spacing: 0.3em; text-transform: uppercase; color: #3a3530; }
+
+  .confetti-wrap { position: fixed; inset: 0; pointer-events: none; z-index: 10; }
+  .confetti-piece { position: absolute; top: -10px; animation: fall var(--fd) ease-in var(--fd-delay) forwards; opacity: 0; }
+  @keyframes fall { 0%{transform:translateY(0) rotate(0);opacity:1} 100%{transform:translateY(110vh) rotate(720deg);opacity:0} }
+</style>
+</head>
+<body>
+<div class="stars" id="stars"></div>
+<div class="confetti-wrap" id="confetti"></div>
+
+<div class="container">
+  <div class="ribbon-top">
+    <div class="ribbon-line"></div>
+    <div class="ribbon-diamond"></div>
+    <div class="ribbon-line right"></div>
+  </div>
+  <p class="age-badge">19 jaar ✦ een bijzonder moment</p>
+  <h1>Benthe <span>Hooijmaijers</span></h1>
+  <p class="subtitle">Van harte gefeliciteerd</p>
+
+  <div class="flip-scene">
+    <div class="flip-card" id="card" onclick="flipCard()">
+
+      <!-- VOORKANT -->
+      <div class="face face-front">
+        <div class="front-icon">🎁</div>
+        <p class="front-label">Jouw verjaardagscadeau wacht</p>
+        <p class="front-title">Klik om<br>jouw cadeau te onthullen</p>
+        <div class="flip-hint">
+          <div class="flip-arrow">↺</div>
+          <span>Draai de kaart om</span>
+        </div>
+      </div>
+
+      <!-- ACHTERKANT -->
+      <div class="face face-back">
+        <div class="back-top">
+          <span class="back-label">Jouw verjaardagscadeau</span>
+          <p class="back-main">Kies jouw eigen<br><em>persoonlijk sieraad</em></p>
+          <span class="back-sub">bij een juwelier naar keuze</span>
+        </div>
+
+        <div class="amount-pill">✦ &nbsp;€ 1.000,— &nbsp;✦</div>
+
+        <div class="back-message">
+          <span class="msg-intro">
+            Dit jaar was net iets meer bijzonder, Benthe —<br>
+            dankzij de verkoop van de <strong>Bitcoin</strong> kon ik<br>
+            jullie iets écht onvergetelijks geven.
+          </span>
+          <ul class="msg-gifts">
+            <li>Robin genoot van een reis naar Japan</li>
+            <li>Een weekend Bristol met mama</li>
+            <li>Het surfkamp</li>
+          </ul>
+        </div>
+
+        <div class="msg-finale-wrap">
+          <span class="msg-finale">
+            En als mooie finale —
+            <em>jouw eigen persoonlijk sieraad 💎</em>
+          </span>
+        </div>
+
+        <div class="back-message">
+          <span class="msg-outro">Kies iets dat altijd van jou is. Iets dat je <strong>koestert</strong>.</span>
+          <span class="from-line">Met veel trots en liefde — Papa ✦</span>
+        </div>
+
+        <p class="close-hint">klik om terug te draaien</p>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="gems">
+    <div class="gem"></div><div class="gem"></div><div class="gem"></div><div class="gem"></div><div class="gem"></div>
+  </div>
+  <p class="footer-note">Met veel liefde gegeven ✦ 2025</p>
+</div>
+
+<script>
+  let flipped = false, confettiFired = false;
+  function flipCard() {
+    flipped = !flipped;
+    document.getElementById('card').classList.toggle('flipped', flipped);
+    if (flipped && !confettiFired) { confettiFired = true; fireConfetti(); }
+  }
+  function fireConfetti() {
+    const colors = ['#c9a96e','#e8d5b0','#9a7040','#f5ede0','#d4b896'];
+    const wrap = document.getElementById('confetti');
+    for (let i = 0; i < 80; i++) {
+      const c = document.createElement('div');
+      c.className = 'confetti-piece';
+      c.style.left = Math.random() * 100 + '%';
+      c.style.background = colors[Math.floor(Math.random() * colors.length)];
+      c.style.setProperty('--fd', (3 + Math.random() * 3).toFixed(1) + 's');
+      c.style.setProperty('--fd-delay', (Math.random() * 2).toFixed(1) + 's');
+      c.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+      const size = (4 + Math.random() * 8) + 'px';
+      c.style.width = c.style.height = size;
+      wrap.appendChild(c);
+    }
+    setTimeout(() => wrap.innerHTML = '', 8000);
+  }
+  const starsEl = document.getElementById('stars');
+  for (let i = 0; i < 120; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    s.style.left = Math.random() * 100 + '%';
+    s.style.top = Math.random() * 100 + '%';
+    s.style.setProperty('--dur', (2 + Math.random() * 4).toFixed(1) + 's');
+    s.style.setProperty('--max-op', (0.3 + Math.random() * 0.7).toFixed(2));
+    s.style.animationDelay = (Math.random() * 5).toFixed(1) + 's';
+    starsEl.appendChild(s);
+  }
+</script>
+</body>
+</html>
